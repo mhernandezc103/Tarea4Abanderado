@@ -1,10 +1,10 @@
 #include <iostream>
 #include <string>
-#include <limits> // Para limpiar el buffer correctamente
+#include <limits>
 using namespace std;
 
 // -------------------------
-// Estructuras principales
+// Estructuras
 // -------------------------
 struct Carne {
     string code;
@@ -28,27 +28,25 @@ struct Student {
 };
 
 // -------------------------
-// Funciones auxiliares
+// Utilidades
 // -------------------------
-
-// Imprime líneas decorativas
 void printSeparator(char symbol = '=', int length = 50) {
     for (int i = 0; i < length; i++)
         cout << symbol;
     cout << endl;
 }
 
-// Lee y valida una nota con un rango máximo permitido
+// Entrada validada de nota con límite máximo
 int leerNota(const string& etiqueta, int maxPuntos) {
     int nota;
     while (true) {
-        cout << "   • " << etiqueta << " (0 - " << maxPuntos << " pts): ";
+        cout << "   - " << etiqueta << " (0 - " << maxPuntos << " pts): ";
         cin >> nota;
 
         if (!cin.fail() && nota >= 0 && nota <= maxPuntos)
             return nota;
 
-        cout << "⚠️  Nota inválida. Por favor ingresa un valor entre 0 y " << maxPuntos << ".\n";
+        cout << "Error: nota inválida. Ingrese un valor entre 0 y " << maxPuntos << ".\n";
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
     }
@@ -60,11 +58,10 @@ int leerNota(const string& etiqueta, int maxPuntos) {
 int main() {
     int total;
 
-    cout << "\n";
     printSeparator('=');
-    cout << "\t🎓 BIENVENIDO A LA CLASE DE STRUCT - UMG 🎓\n";
+    cout << "\tBIENVENIDO A LA CLASE DE STRUCT - UMG\n";
     printSeparator('=');
-    cout << "\n¿Cuántos estudiantes desea ingresar?: ";
+    cout << "\nCantidad de estudiantes a ingresar: ";
     cin >> total;
     cin.ignore();
 
@@ -72,65 +69,62 @@ int main() {
     Student abanderado;
     int mayorNota = -1;
 
-    // Ciclo para ingresar estudiantes
     for (int i = 0; i < total; i++) {
         printSeparator('-');
-        cout << "📘 Ingreso de datos del alumno #" << i + 1 << endl;
+        cout << "Registro del estudiante #" << i + 1 << endl;
         printSeparator('-');
 
         Student student;
 
-        cout << "🧍 Nombre completo: ";
+        cout << "Nombre completo: ";
         getline(cin, student.name);
 
-        cout << "📧 Correo electrónico: ";
+        cout << "Correo electrónico: ";
         getline(cin, student.email);
 
-        cout << "🏫 Código de carrera: ";
+        cout << "Código de carrera: ";
         getline(cin, student.carne.code);
 
-        cout << "📅 Año de carrera: ";
+        cout << "Año de carrera: ";
         cin >> student.carne.year;
 
-        cout << "🔢 Número de estudiante: ";
+        cout << "Número de estudiante: ";
         cin >> student.carne.number;
         cin.ignore();
 
-        cout << "\n🧾 Ingrese las notas de " << student.name << ":\n";
+        cout << "\nIngrese las notas de " << student.name << ":\n";
 
-        // Validación según nuevo sistema de puntos
+        // Rango de puntos actualizado
         student.note.parcial1 = leerNota("Primer parcial", 15);
         student.note.parcial2 = leerNota("Segundo parcial", 15);
         student.note.actividades = leerNota("Actividades", 35);
         student.note.examenfinal = leerNota("Examen final", 35);
 
-        // Calcular total
+        // Cálculo total
         student.note.sumatoria = student.note.parcial1 +
                                  student.note.parcial2 +
                                  student.note.actividades +
                                  student.note.examenfinal;
 
-        // Guardar estudiante
         students[i] = student;
 
-        // Actualizar abanderado
+        // Evaluación de abanderado
         if (student.note.sumatoria > mayorNota) {
             mayorNota = student.note.sumatoria;
             abanderado = student;
         }
 
-        cout << "\n✅ Alumno registrado con éxito.\n\n";
+        cout << "\nEstudiante registrado correctamente.\n\n";
     }
 
-    // Mostrar listado de estudiantes
-    cout << "\n\n";
+    // Listado general
     printSeparator('=');
-    cout << "\t📄 LISTADO DE ESTUDIANTES 📄\n";
+    cout << "\tLISTADO DE ESTUDIANTES\n";
     printSeparator('=');
 
     for (int i = 0; i < total; i++) {
         Student s = students[i];
-        cout << "\n👨‍🎓 Alumno #" << i + 1 << endl;
+        cout << "\nEstudiante #" << i + 1 << endl;
         printSeparator('.');
         cout << "Nombre: " << s.name << endl;
         cout << "Correo: " << s.email << endl;
@@ -138,18 +132,17 @@ int main() {
         cout << "Nota total: " << s.note.sumatoria << " / 100" << endl;
     }
 
-    // Mostrar abanderado
-    cout << "\n\n";
+    // Resultado del abanderado
     printSeparator('=');
-    cout << "\t🏅 ABANDERADO DEL GRUPO 🏅\n";
+    cout << "\tABANDERADO DEL GRUPO\n";
     printSeparator('=');
-    cout << "👑 Nombre: " << abanderado.name << endl;
-    cout << "📧 Correo: " << abanderado.email << endl;
-    cout << "🏷️  Carné: " << abanderado.carne.code << "-" << abanderado.carne.year << "-" << abanderado.carne.number << endl;
-    cout << "📊 Nota total: " << abanderado.note.sumatoria << " / 100" << endl;
+    cout << "Nombre: " << abanderado.name << endl;
+    cout << "Correo: " << abanderado.email << endl;
+    cout << "Carné: " << abanderado.carne.code << "-" << abanderado.carne.year << "-" << abanderado.carne.number << endl;
+    cout << "Nota total: " << abanderado.note.sumatoria << " / 100" << endl;
     printSeparator('=');
 
-    cout << "\n🎉 ¡Felicidades al abanderado del grupo! 🎉\n\n";
+    cout << "\nFin del programa.\n";
 
     return 0;
 }
